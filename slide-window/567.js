@@ -9,31 +9,26 @@ var checkInclusion = function (s1, s2) {
   const s1Map = {};
   const s2Map = {};
   let left = 0;
+  let right = s1Size;
 
   if (s2Size < s1Size) return false;
 
-  for (const c of s1) {
-    if (s1Map[c]) {
-      s1Map[c]++;
-    } else {
-      s1Map[c] = 1;
-    }
-  }
-
   for (let i = 0; i < s1Size; i++) {
-    const c = s2[i];
-    if (s2Map[c]) {
-      s2Map[c]++;
-    } else {
-      s2Map[c] = 1;
-    }
+    const c1 = s1[i];
+    const c2 = s2[i];
+    s1Map[c1] = s1Map[c1] ? s1Map[c1] + 1 : 1;
+    s2Map[c2] = s2Map[c2] ? s2Map[c2] + 1 : 1;
   }
 
   if (check(s1Map, s2Map)) {
     return true;
   }
 
-  for (let right = s1Size; right < s2.length; left++, right++) {
+  while (right <= s2Size) {
+    if (check(s1Map, s2Map)) {
+      return true;
+    }
+
     if (s2Map[s2[left]] === 1) {
       delete s2Map[s2[left]];
     } else {
@@ -46,9 +41,7 @@ var checkInclusion = function (s1, s2) {
       s2Map[s2[right]] = 1;
     }
 
-    if (check(s1Map, s2Map)) {
-      return true;
-    }
+    left++, right++;
   }
 
   return false;
@@ -69,5 +62,6 @@ function check(s1Map, s2Map) {
   return true;
 }
 
-// console.log(checkInclusion("ab", "eidbaooo"));
+console.log(checkInclusion("ab", "abddooo"));
+console.log(checkInclusion("ab", "eidbaooo"));
 console.log(checkInclusion("abc", "ccccba"));
