@@ -3,26 +3,22 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function (s) {
-  let answer = "";
+  let result = 0;
+  const map = {};
+  let left = 0;
+
   for (let i = 0; i < s.length; i++) {
-    let tempString = s[i];
-    const exists = { [s[i]]: true };
-
-    for (let j = i + 1; j < s.length; j++) {
-      if (exists[s[j]]) {
-        break;
-      }
-      tempString += s[j];
-      exists[s[j]] = true;
-    }
-
-    answer = answer.length < tempString.length ? tempString : answer;
+    const c = s[i];
+    left = left <= map[c] ? map[c] + 1 : left;
+    map[c] = i;
+    result = Math.max(result, i - left + 1);
   }
 
-  return answer.length;
+  return result;
 };
 
 console.log(lengthOfLongestSubstring("abcabcbb"));
 console.log(lengthOfLongestSubstring("bbbbbb"));
 console.log(lengthOfLongestSubstring("pwwkew"));
-console.log(lengthOfLongestSubstring(""));
+console.log(lengthOfLongestSubstring(" "));
+console.log(lengthOfLongestSubstring("abba"));
