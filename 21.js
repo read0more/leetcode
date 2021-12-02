@@ -12,33 +12,24 @@ const helper = require("./leetcodeHelper");
  * @param {ListNode} list2
  * @return {ListNode}
  */
-var mergeTwoLists = function (list1, list2) {
-    if (!list1 && !list2) return null;
+ var mergeTwoLists = function(list1, list2) {
+    const nullHead = new ListNode();
+    let curr = nullHead;
 
-    const values = [];
-    const nodes = [];
-
-    while (list1) {
-        values.push(list1.val);
-        list1 = list1.next;
+    while (list1 && list2) {
+        if (list1.val < list2.val) {            
+            curr.next = list1;
+            list1 = list1.next;
+        } else {
+            curr.next = list2;
+            list2 = list2.next;
+        }
+        curr = curr.next;
     }
+    
+    curr.next = list1 || list2;
 
-    while (list2) {
-        values.push(list2.val);
-        list2 = list2.next;
-    }
-
-    values.sort((a, b) => a - b);
-
-    for (const value of values) {
-        nodes.push(new ListNode(value));
-    }
-
-    for (let i = 0; i < nodes.length - 1; i++) {
-        nodes[i].next = nodes[i + 1];
-    }
-
-    return nodes[0];
+    return nullHead.next;
 };
 
 function ListNode(val, next) {
